@@ -32,9 +32,11 @@ import {
   isFirstPlayer,
   isSelfDamage,
   onAnyChallenge,
+  sfxManager,
 } from "isaacscript-common";
 import { BossIDCustom } from "../../enums/BossIDCustom";
 import { ObjectiveType } from "../../enums/ObjectiveType";
+import { SoundEffectCustom } from "../../enums/SoundEffectCustom";
 import {
   getNumSecondsForBossObjective,
   getObjective,
@@ -69,7 +71,6 @@ const v = {
 
 export class BossNoHitObjectiveDetection extends RandomizerModFeature {
   v = v;
-
   // 0, 102
   @Callback(ModCallback.POST_NPC_UPDATE, EntityType.ISAAC)
   postNPCUpdateIsaac(npc: EntityNPC): void {
@@ -133,6 +134,9 @@ export class BossNoHitObjectiveDetection extends RandomizerModFeature {
     }
 
     const seconds = getSecondsSinceLastDamage();
+    if (seconds == 0) {
+      sfxManager.Play(SoundEffectCustom.NEPRAVILNO);
+    }
     if (seconds === undefined) {
       return;
     }

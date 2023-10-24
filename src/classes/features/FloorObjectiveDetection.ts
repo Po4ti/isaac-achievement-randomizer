@@ -20,9 +20,11 @@ import {
   isSelfDamage,
   onAnyChallenge,
   onRepentanceStage,
+  sfxManager,
 } from "isaacscript-common";
 import { CharacterObjectiveKind } from "../../enums/CharacterObjectiveKind";
 import { ObjectiveType } from "../../enums/ObjectiveType";
+import { SoundEffectCustom } from "../../enums/SoundEffectCustom";
 import { getObjective } from "../../types/Objective";
 import { getAdjustedCharacterForObjective } from "../../utils";
 import { RandomizerModFeature } from "../RandomizerModFeature";
@@ -110,7 +112,9 @@ export class FloorObjectiveDetection extends RandomizerModFeature {
       return undefined;
     }
 
+    if (v.level.tookHit != true) sfxManager.Play(SoundEffectCustom.NEPRAVILNO);
     v.level.tookHit = true;
+
     return undefined;
   }
 

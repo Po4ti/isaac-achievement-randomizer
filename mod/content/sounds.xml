@@ -3,6 +3,9 @@
   <sound name="Golden Walnut">
     <sample weight="1" path="golden-walnut.wav" />
   </sound>
+  <sound name="nepravilno">
+    <sample weight="1" path="nepravilno.wav" />
+  </sound>  
   <sound name="deadseascrolls_pop">
     <sample weight="1" path="deadseascrolls/pop.wav" />
   </sound>
