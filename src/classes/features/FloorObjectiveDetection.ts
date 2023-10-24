@@ -29,6 +29,7 @@ import { getObjective } from "../../types/Objective";
 import { getAdjustedCharacterForObjective } from "../../utils";
 import { RandomizerModFeature } from "../RandomizerModFeature";
 import { addObjective } from "./achievementTracker/addObjective";
+import { isCharacterObjectiveCompleted } from "./achievementTracker/completedObjectives";
 
 const ROOM_TYPES = [
   RoomType.DEFAULT, // 1
@@ -112,7 +113,17 @@ export class FloorObjectiveDetection extends RandomizerModFeature {
       return undefined;
     }
 
-    if (v.level.tookHit != true) sfxManager.Play(SoundEffectCustom.NEPRAVILNO);
+    const character = getAdjustedCharacterForObjective(player);
+    const kindNoHit = getCharacterObjectiveKindNoHit();
+
+    if (
+      kindNoHit != undefined &&
+      !isCharacterObjectiveCompleted(character, kindNoHit) &&
+      v.level.tookHit != true
+    ) {
+      sfxManager.Play(SoundEffectCustom.NEPRAVILNO);
+    }
+
     v.level.tookHit = true;
 
     return undefined;
