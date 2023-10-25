@@ -13,8 +13,9 @@ import {
   ModCallback,
   NPCState,
   PeepVariant,
-  PrideVariant,
   RoomType,
+  SlothVariant,
+  UltraGreedVariant,
 } from "isaac-typescript-definitions";
 import {
   Callback,
@@ -29,6 +30,7 @@ import {
   getNPCs,
   getRoomSubType,
   inBigRoom,
+  isActiveEnemy,
   isFirstPlayer,
   isSelfDamage,
   onAnyChallenge,
@@ -213,21 +215,6 @@ export class BossNoHitObjectiveDetection extends RandomizerModFeature {
     v.room.tookDamageRoomFrame = room.GetFrameCount();
   }
 
-  // 68, 274
-  @Callback(ModCallback.POST_ENTITY_KILL, EntityType.MEGA_SATAN)
-  postEntityKillMegaSatan(): void {
-    const bossID = getModifiedBossID();
-    if (bossID !== BossID.MEGA_SATAN) {
-      return;
-    }
-
-    const room = game.GetRoom();
-    const roomFrameCount = room.GetFrameCount();
-    v.room.tookDamageRoomFrame = roomFrameCount + GAME_FRAMES_PER_SECOND * 10;
-    // (We need to account for the long appear animation. We do not use the `POST_NPC_INIT` callback
-    // since it does not fire for Mega Satan 2.)
-  }
-
   // 27, 950
   @Callback(ModCallback.POST_NPC_INIT, EntityType.DOGMA)
   postNPCInitDogma(): void {
@@ -277,6 +264,34 @@ export class BossNoHitObjectiveDetection extends RandomizerModFeature {
   postNPCInitUltraDeath(): void {
     const room = game.GetRoom();
     v.room.tookDamageRoomFrame = room.GetFrameCount();
+  }
+
+  // 68, 274
+  @Callback(ModCallback.POST_ENTITY_KILL, EntityType.MEGA_SATAN)
+  postEntityKillMegaSatan(): void {
+    const bossID = getModifiedBossID();
+    if (bossID !== BossID.MEGA_SATAN) {
+      return;
+    }
+
+    const room = game.GetRoom();
+    const roomFrameCount = room.GetFrameCount();
+    v.room.tookDamageRoomFrame = roomFrameCount + GAME_FRAMES_PER_SECOND * 10;
+    // (We need to account for the long appear animation. We do not use the `POST_NPC_INIT` callback
+    // since it does not fire for Mega Satan 2.)
+  }
+
+  // 68, 406, 0
+  @CallbackCustom(
+    ModCallbackCustom.POST_ENTITY_KILL_FILTER,
+    EntityType.ULTRA_GREED,
+  )
+  postEntityKillUltraGreed(): void {
+    const room = game.GetRoom();
+    const roomFrameCount = room.GetFrameCount();
+    v.room.tookDamageRoomFrame = roomFrameCount + GAME_FRAMES_PER_SECOND * 7;
+    // (We need to account for the long appear animation. We do not use the `POST_NPC_INIT` callback
+    // since it does not fire for Ultra Greedier.)
   }
 
   // 68, 71
@@ -514,6 +529,28 @@ export function getSecondsSinceLastDamage(): int | undefined {
       break;
     }
 
+    // 71
+    case BossID.ULTRA_GREEDIER: {
+      // The Ultra Greedier entity is not removed after the explosion and still counts as being
+      // alive, so we must use the custom logic contained within the `isActiveEnemy` helper
+      // function.
+      const ultraGreediers = getNPCs(
+        EntityType.ULTRA_GREED,
+        UltraGreedVariant.ULTRA_GREEDIER,
+        -1,
+        true,
+      );
+      const aliveBosses = ultraGreediers.filter(
+        (boss) => !boss.IsDead() && isActiveEnemy(boss),
+      );
+
+      if (aliveBosses.length === 0) {
+        return;
+      }
+
+      break;
+    }
+
     // 68
     case BossID.SISTERS_VIS: {
       const sistersVis = getNPCs(EntityType.SISTERS_VIS, -1, -1, true);
@@ -539,8 +576,8 @@ export function getSecondsSinceLastDamage(): int | undefined {
 
     case BossIDCustom.ULTRA_PRIDE: {
       const ultraPrides = getNPCs(
-        EntityType.PRIDE,
-        PrideVariant.ULTRA_PRIDE,
+        EntityType.SLOTH,
+        SlothVariant.ULTRA_PRIDE,
         -1,
         true,
       );
@@ -553,7 +590,7 @@ export function getSecondsSinceLastDamage(): int | undefined {
       const bosses = [...ultraPrides, ...ultraPrideBabies];
       const aliveBosses = bosses.filter((boss) => !boss.IsDead());
 
-      if (aliveBosses.length === 0) {
+      if (aliveBosses.length < 2) {
         return;
       }
 

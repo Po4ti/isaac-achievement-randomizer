@@ -31,7 +31,7 @@ const BOSS_ID_TO_CHARACTER_OBJECTIVE_KIND = new ReadonlyMap<
   [BossID.DELIRIUM, CharacterObjectiveKind.DELIRIUM],
   [BossID.MOTHER, CharacterObjectiveKind.MOTHER],
   // There is no boss ID for The Beast (it does not have its own boss room).
-  [BossID.ULTRA_GREED, CharacterObjectiveKind.ULTRA_GREED],
+  [BossID.ULTRA_GREEDIER, CharacterObjectiveKind.ULTRA_GREED],
 ]);
 
 /** This feature handles both the "killing boss" objectives and the "no hit floor" objectives. */
