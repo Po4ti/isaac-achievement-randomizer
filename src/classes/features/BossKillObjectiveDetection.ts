@@ -66,17 +66,25 @@ export function bossObjectiveDetectionPreSpawnClearAward(): void {
   switch (roomType) {
     // 5
     case RoomType.BOSS: {
-      // Handle XL floors.
-      const level = game.GetLevel();
-      const lastBossRoomListIndex = level.GetLastBossRoomListIndex();
-      const roomListIndex = getRoomListIndex();
-      if (roomListIndex !== lastBossRoomListIndex) {
-        return;
-      }
-
       const bossID = getModifiedBossID();
       if (bossID === undefined) {
         return;
+      }
+      // Handle XL floors.
+      if (
+        // Mother is in a separate Boss Room from the one reported by the
+        // `Level.GetLastBossRoomListIndex` method.
+        bossID !== BossID.MOTHER &&
+        // The Delirium Boss Room does not correspond to the value returned by the
+        // `Level.GetLastBossRoomListIndex` method.
+        bossID !== BossID.DELIRIUM
+      ) {
+        const level = game.GetLevel();
+        const lastBossRoomListIndex = level.GetLastBossRoomListIndex();
+        const roomListIndex = getRoomListIndex();
+        if (roomListIndex !== lastBossRoomListIndex) {
+          return;
+        }
       }
 
       const kindBoss = BOSS_ID_TO_CHARACTER_OBJECTIVE_KIND.get(bossID);
