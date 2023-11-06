@@ -80,7 +80,7 @@ export class StatsTracker extends ModFeature {
         v.run.renderFramePaused === null ||
         isAfterRenderFrame(v.run.renderFramePaused + RENDER_FRAMES_PER_SECOND)
       ) {
-        print("Illegal pause detected.");
+        print("Pause illegale detectee.");
       }
 
       const renderFrameCount = Isaac.GetFrameCount();
@@ -140,7 +140,7 @@ export class StatsTracker extends ModFeature {
 
   @CallbackCustom(ModCallbackCustom.POST_GAME_STARTED_REORDERED, true)
   postGameStartedReorderedTrue(): void {
-    print("Illegal save and quit detected.");
+    print("Sauvegarde et sortie illegales detectees.");
     v.persistent.stats.usedSaveAndQuit = true;
   }
 
