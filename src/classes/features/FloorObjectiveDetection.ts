@@ -144,7 +144,16 @@ export class FloorObjectiveDetection extends RandomizerModFeature {
     if (!isFirstPlayer(player)) {
       return;
     }
+    const character = getAdjustedCharacterForObjective(player);
+    const kindNoHit = getCharacterObjectiveKindNoHit();
 
+    if (
+      kindNoHit != undefined &&
+      !isCharacterObjectiveCompleted(character, kindNoHit) &&
+      v.level.tookHit != true
+    ) {
+      sfxManager.Play(SoundEffectCustom.NEPRAVILNO);
+    }
     v.level.tookHit = true;
   }
 }

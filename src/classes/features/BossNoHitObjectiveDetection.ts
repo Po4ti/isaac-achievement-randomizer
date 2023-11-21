@@ -68,6 +68,7 @@ const v = {
     onFirstPhaseOfIsaac: true,
     onFirstPhaseOfHush: true,
     beastAppeared: false,
+    realHushStarted: false,
   },
 };
 
@@ -137,7 +138,15 @@ export class BossNoHitObjectiveDetection extends RandomizerModFeature {
 
     const seconds = getSecondsSinceLastDamage();
     if (seconds == 0) {
-      sfxManager.Play(SoundEffectCustom.NEPRAVILNO);
+      if (bossID == BossID.HUSH) {
+        if (!v.room.realHushStarted) {
+          v.room.realHushStarted = true;
+        } else {
+          sfxManager.Play(SoundEffectCustom.NEPRAVILNO);
+        }
+      } else {
+        sfxManager.Play(SoundEffectCustom.NEPRAVILNO);
+      }
     }
     if (seconds === undefined) {
       return;
