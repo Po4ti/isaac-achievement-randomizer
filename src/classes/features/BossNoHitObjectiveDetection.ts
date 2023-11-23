@@ -29,9 +29,11 @@ import {
   getEntityTypeVariantFromBossID,
   getNPCs,
   getRoomSubType,
+  getStageType,
   inBigRoom,
   isActiveEnemy,
   isFirstPlayer,
+  isRepentanceStage,
   isSelfDamage,
   onAnyChallenge,
   sfxManager,
@@ -812,5 +814,12 @@ export function getModifiedBossID(): BossID | undefined {
     }
   }
 
-  return getBossID();
+  const bID = getBossID();
+  const isRep = isRepentanceStage(getStageType());
+  if (!isRep) return bID;
+  else {
+    if (bID == BossID.MOM) return BossID.MAUSOLEUM_MOM;
+    if (bID == BossID.MOMS_HEART) return BossID.MAUSOLEUM_MOMS_HEART;
+    return bID;
+  }
 }
