@@ -5,7 +5,7 @@ from get_version_from_package_json import get_version_from_package_json
 from utils import printf, PROJECT_DIRECTORY, SCRIPT_DIRECTORY
 
 FONTS_DIRECTORY_PATH = os.path.join(SCRIPT_DIRECTORY, "fonts")
-TITLE_FONT_PATH = os.path.join(FONTS_DIRECTORY_PATH, "jelly-crazies.ttf")
+TITLE_FONT_PATH = os.path.join(FONTS_DIRECTORY_PATH, "batmanforeveralternatecyr.ttf")
 URL_FONT_PATH = os.path.join(FONTS_DIRECTORY_PATH, "vera.ttf")
 MOD_DIRECTORY_PATH = os.path.join(PROJECT_DIRECTORY, "mod")
 ENGLISH_RESOURCES_DIRECTORY_PATH = os.path.join(MOD_DIRECTORY_PATH, "resources")
@@ -18,8 +18,8 @@ TITLE_MENU_TEMPLATE_PATH = os.path.join(
 TITLE_MENU_FILE_1 = "titlemenu.png"  # For the normal title screen.
 TITLE_MENU_FILE_2 = "titlemenu_2.png"  # For the "Stop Playing!" title screen.
 
-LARGE_FONT = ImageFont.truetype(TITLE_FONT_PATH, 9)
-SMALL_FONT = ImageFont.truetype(TITLE_FONT_PATH, 6)
+LARGE_FONT = ImageFont.truetype(TITLE_FONT_PATH, 19)
+SMALL_FONT = ImageFont.truetype(TITLE_FONT_PATH, 16)
 URL_FONT = ImageFont.truetype(URL_FONT_PATH, 11)
 BETA_FONT = ImageFont.truetype(URL_FONT_PATH, 14)
 COLOR = (67, 93, 145)
@@ -36,14 +36,14 @@ def write_version(version):
 
     # Get the dimensions of how big the text will be.
     combined_text = "V" + version
-    width, height = title_draw.textsize(combined_text, font=LARGE_FONT)
+    width = title_draw.textlength(combined_text, font=LARGE_FONT)
 
     # Draw the mod title.
     title_x = 415
     title_y = 210
-    width, height = title_draw.textsize("Achievement", font=URL_FONT)
+    width = title_draw.textlength("Achievement", font=URL_FONT)
     title_draw.text((title_x - width / 2, title_y), "Achievement", COLOR, font=URL_FONT)
-    width, height = title_draw.textsize("Randomizer", font=URL_FONT)
+    width = title_draw.textlength("Randomizer", font=URL_FONT)
     title_draw.text(
         (title_x - width / 2, title_y + 10), "Randomizer", COLOR, font=URL_FONT
     )
@@ -51,16 +51,16 @@ def write_version(version):
     # Draw the version.
     version_x = 420
     version_y = 240
-    title_draw.text((version_x - width / 2, version_y), "V", COLOR, font=SMALL_FONT)
+    title_draw.text((version_x - width / 2, version_y - 1), "v", COLOR, font=SMALL_FONT)
     title_draw.text(
-        (version_x + 10 - width / 2, version_y - 6), version, COLOR, font=LARGE_FONT
+        (version_x + 18 - width / 2, version_y - 4), version, COLOR, font=LARGE_FONT
     )
 
     # Draw the beta text.
     beta_x = 415
     beta_y = 255
-    width, height = title_draw.textsize("BETA", font=BETA_FONT)
-    title_draw.text((beta_x - width / 2, beta_y), "BETA", COLOR, font=BETA_FONT)
+    width = title_draw.textlength("MODDED", font=BETA_FONT)
+    title_draw.text((beta_x - width / 2, beta_y), "Modded", COLOR, font=BETA_FONT)
 
     # Write the finished title screen.
     title_menu_file_1_path = os.path.join(MAIN_MENU_DIRECTORY_PATH, TITLE_MENU_FILE_1)
