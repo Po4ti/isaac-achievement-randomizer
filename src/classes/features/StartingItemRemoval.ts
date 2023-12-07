@@ -1,5 +1,6 @@
 import {
   CardType,
+  CollectibleType,
   EffectVariant,
   PillColor,
   PillEffect,
@@ -58,7 +59,14 @@ export class StartingItemRemoval extends RandomizerModFeature {
         player.HasCollectible(collectibleType) &&
         (!isCollectibleTypeUnlocked(collectibleType, true) ||
           BANNED_COLLECTIBLE_TYPES_SET.has(collectibleType) ||
-          isEden(player))
+          isEden(player)) &&
+        !(
+          //Leave bag on TCain
+          (
+            character == PlayerType.CAIN_B &&
+            collectibleType == CollectibleType.BAG_OF_CRAFTING
+          )
+        )
       ) {
         player.RemoveCollectible(collectibleType);
         rebirthItemTrackerRemoveCollectible(collectibleType);
@@ -106,7 +114,7 @@ export class StartingItemRemoval extends RandomizerModFeature {
       case PlayerType.EDEN_B: {
         // Eden may be randomly given collectibles that are not yet unlocked, so we remove all
         // collectibles and then explicitly add two new ones.
-        this.emptyEdenInventory(player);
+        // this.emptyEdenInventory(player);
         this.addEdenRandomCollectibles(player);
         break;
       }
@@ -149,21 +157,30 @@ export class StartingItemRemoval extends RandomizerModFeature {
     const passiveCollectibleTypes =
       getUnlockedEdenPassiveCollectibleTypes(true);
 
-    const passiveCollectibleType = getRandomArrayElement(
-      passiveCollectibleTypes,
-      rng,
-    );
+    const passiveCollectibleType =
+      passiveCollectibleTypes.length > 0
+        ? getRandomArrayElement(passiveCollectibleTypes, rng)
+        : undefined;
 
     // If we do not have any active collectibles unlocked, default to giving Eden a second passive
     // collectible.
-    const activeCollectibleType =
-      activeCollectibleTypes.length === 0
-        ? getRandomArrayElement(passiveCollectibleTypes, rng, [
-            passiveCollectibleType,
-          ])
-        : getRandomArrayElement(activeCollectibleTypes, rng);
 
-    player.AddCollectible(activeCollectibleType);
-    player.AddCollectible(passiveCollectibleType);
+    let act = undefined;
+
+    if (activeCollectibleTypes.length > 0) {
+      act = getRandomArrayElement(activeCollectibleTypes, rng);
+    } else if (passiveCollectibleTypes.length > 1) {
+      act = getRandomArrayElement(passiveCollectibleTypes, rng, [
+        passiveCollectibleType,
+      ]);
+    }
+    const activeCollectibleType = act;
+
+    if (activeCollectibleType != undefined) {
+      player.AddCollectible(activeCollectibleType);
+      player.FullCharge();
+    }
+    if (passiveCollectibleType != undefined)
+      player.AddCollectible(passiveCollectibleType);
   }
 }
