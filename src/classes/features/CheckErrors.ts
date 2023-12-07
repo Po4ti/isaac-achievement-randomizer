@@ -25,7 +25,6 @@ import {
   newSprite,
   onAnyChallenge,
   onVictoryLap,
-  parseSemanticVersion,
   removeAllDoors,
 } from "isaacscript-common";
 import { version } from "../../../package.json";
@@ -327,33 +326,33 @@ function doVersionsMatch(): boolean {
     return false;
   }
 
-  const correctSemanticVersion = parseSemanticVersion(
-    LAST_VERSION_WITH_ACHIEVEMENT_CHANGES,
-  );
-  if (correctSemanticVersion === undefined) {
-    error(
-      `Failed to parse the last version with achievement changes: ${LAST_VERSION_WITH_ACHIEVEMENT_CHANGES}`,
-    );
-  }
+  // const correctSemanticVersion = parseSemanticVersion(
+  //   LAST_VERSION_WITH_ACHIEVEMENT_CHANGES,
+  // );
+  // if (correctSemanticVersion === undefined) {
+  //   error(
+  //     `Failed to parse the last version with achievement changes: ${LAST_VERSION_WITH_ACHIEVEMENT_CHANGES}`,
+  //   );
+  // }
 
-  const correctMajorVersion = correctSemanticVersion.majorVersion;
-  const correctMinorVersion = correctSemanticVersion.minorVersion;
+  // const correctMajorVersion = correctSemanticVersion.majorVersion;
+  // const correctMinorVersion = correctSemanticVersion.minorVersion;
 
-  const achievementsSemanticVersion = parseSemanticVersion(achievementsVersion);
-  if (achievementsSemanticVersion === undefined) {
-    error(`Failed to parse the achievements version: ${achievementsVersion}`);
-  }
+  // const achievementsSemanticVersion = parseSemanticVersion(achievementsVersion);
+  // if (achievementsSemanticVersion === undefined) {
+  //   error(`Failed to parse the achievements version: ${achievementsVersion}`);
+  // }
 
-  const achievementsMajorVersion = achievementsSemanticVersion.majorVersion;
-  const achievementsMinorVersion = achievementsSemanticVersion.minorVersion;
+  // const achievementsMajorVersion = achievementsSemanticVersion.majorVersion;
+  // const achievementsMinorVersion = achievementsSemanticVersion.minorVersion;
 
-  if (correctMajorVersion > achievementsMajorVersion) {
-    return false;
-  }
+  // if (correctMajorVersion > achievementsMajorVersion) {
+  //   return false;
+  // }
 
-  if (correctMinorVersion > achievementsMinorVersion) {
-    return false;
-  }
+  // if (correctMinorVersion > achievementsMinorVersion) {
+  //   return false;
+  // }
 
   return true;
 }

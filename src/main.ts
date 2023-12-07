@@ -9,6 +9,7 @@ import { version } from "../package.json";
 import { AchievementNotification } from "./classes/features/AchievementNotification";
 import { AchievementRandomizer } from "./classes/features/AchievementRandomizer";
 import { AchievementTracker } from "./classes/features/AchievementTracker";
+import { BagOfCraftingRestrictions } from "./classes/features/BagOfCraftingRestrictions";
 import { BossKillObjectiveDetection } from "./classes/features/BossKillObjectiveDetection";
 import { BossNoHitObjectiveDetection } from "./classes/features/BossNoHitObjectiveDetection";
 import { ChallengeObjectiveDetection } from "./classes/features/ChallengeObjectiveDetection";
@@ -85,6 +86,7 @@ const MOD_FEATURES = [
   StatsTracker,
   Timer,
   UIIcon,
+  BagOfCraftingRestrictions,
 ] as const;
 
 export function main(): void {
