@@ -38,6 +38,7 @@ import {
   onAnyChallenge,
   sfxManager,
 } from "isaacscript-common";
+import { isPrikolsEnabled } from "../../config";
 import { BossIDCustom } from "../../enums/BossIDCustom";
 import { ObjectiveType } from "../../enums/ObjectiveType";
 import { SoundEffectCustom } from "../../enums/SoundEffectCustom";
@@ -139,7 +140,7 @@ export class BossNoHitObjectiveDetection extends RandomizerModFeature {
     }
 
     const seconds = getSecondsSinceLastDamage();
-    if (seconds == 0) {
+    if (seconds == 0 && isPrikolsEnabled()) {
       if (bossID == BossID.HUSH) {
         if (!v.room.realHushStarted) {
           v.room.realHushStarted = true;
