@@ -22,6 +22,7 @@ import {
   onRepentanceStage,
   sfxManager,
 } from "isaacscript-common";
+import { isPrikolsEnabled } from "../../config";
 import { CharacterObjectiveKind } from "../../enums/CharacterObjectiveKind";
 import { ObjectiveType } from "../../enums/ObjectiveType";
 import { SoundEffectCustom } from "../../enums/SoundEffectCustom";
@@ -119,7 +120,8 @@ export class FloorObjectiveDetection extends RandomizerModFeature {
     if (
       kindNoHit != undefined &&
       !isCharacterObjectiveCompleted(character, kindNoHit) &&
-      v.level.tookHit != true
+      v.level.tookHit != true &&
+      isPrikolsEnabled()
     ) {
       sfxManager.Play(SoundEffectCustom.NEPRAVILNO);
     }
@@ -150,7 +152,8 @@ export class FloorObjectiveDetection extends RandomizerModFeature {
     if (
       kindNoHit != undefined &&
       !isCharacterObjectiveCompleted(character, kindNoHit) &&
-      v.level.tookHit != true
+      v.level.tookHit != true &&
+      isPrikolsEnabled()
     ) {
       sfxManager.Play(SoundEffectCustom.NEPRAVILNO);
     }

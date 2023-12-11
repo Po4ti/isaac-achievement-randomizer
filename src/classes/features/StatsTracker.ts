@@ -23,7 +23,8 @@ import {
   onChallenge,
   repeat,
 } from "isaacscript-common";
-import { isPreventPauseEnabled } from "../../config";
+//import { isPreventPauseEnabled } from "../../config";
+import { isPrikolsEnabled } from "../../config";
 import { ChallengeCustom } from "../../enums/ChallengeCustom";
 import { convertSecondsToTimerValues } from "../../timer";
 import { getRandomizerSeed, isRandomizerEnabled } from "./achievementTracker/v";
@@ -67,7 +68,7 @@ export class StatsTracker extends ModFeature {
   @Callback(ModCallback.POST_RENDER)
   postRender(): void {
     if (
-      !isPreventPauseEnabled() &&
+      isPrikolsEnabled() &&
       isRoomDangerous() &&
       isActionPressedOnAnyInput(
         ButtonAction.PAUSE, // 12
@@ -140,8 +141,10 @@ export class StatsTracker extends ModFeature {
 
   @CallbackCustom(ModCallbackCustom.POST_GAME_STARTED_REORDERED, true)
   postGameStartedReorderedTrue(): void {
-    print("Sauvegarde et sortie illegales detectees.");
-    v.persistent.stats.usedSaveAndQuit = true;
+    if (isPrikolsEnabled()) {
+      print("Sauvegarde et sortie illegales detectees.");
+      v.persistent.stats.usedSaveAndQuit = true;
+    }
   }
 
   /** TODO: Delete this when the beta ends. */

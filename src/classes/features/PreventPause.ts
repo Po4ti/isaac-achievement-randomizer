@@ -1,4 +1,4 @@
-import { ButtonAction, InputHook } from "isaac-typescript-definitions";
+/*import { ButtonAction, InputHook } from "isaac-typescript-definitions";
 import {
   CallbackCustom,
   ModCallbackCustom,
@@ -7,6 +7,7 @@ import {
 import { isPreventPauseEnabled } from "../../config";
 import { RandomizerModFeature } from "../RandomizerModFeature";
 import { isRandomizerEnabled } from "./achievementTracker/v";
+
 
 export class PreventPause extends RandomizerModFeature {
   override shouldCallbackMethodsFire = (): boolean =>
@@ -29,4 +30,4 @@ export class PreventPause extends RandomizerModFeature {
   inputActionConsole(): boolean | undefined {
     return isRoomDangerous() ? false : undefined;
   }
-}
+}*/

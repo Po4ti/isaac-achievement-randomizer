@@ -21,8 +21,6 @@ import {
   getPlaythroughNumCompletedRuns,
   getPlaythroughNumDeaths,
   getPlaythroughTimeElapsed,
-  hasIllegalPause,
-  hasSavedAndQuit,
 } from "./classes/features/StatsTracker";
 import {
   isAllBossObjectivesCompleted,
@@ -81,7 +79,7 @@ const DSS_CHOICES = ["disabled", "enabled"] as const;
 
 export function initDeadSeaScrolls(): void {
   mod.saveDataManager("deadSeaScrolls", v);
-  const DSSMod = init(`${MOD_NAME}-DSS`, 1, v.persistent);
+  const DSSMod = init(`${MOD_NAME}-DSS`, v.persistent.deadSeaScrolls);
 
   const directory: Record<string, unknown> = {
     main: {
@@ -778,31 +776,6 @@ export function initDeadSeaScrolls(): void {
         {
           str: "",
         },
-        {
-          str: "ever illegally paused?",
-        },
-        {
-          str: () => (hasIllegalPause() ? "yes" : "no"),
-          colorSelect: true,
-          noSel: true,
-        },
-        {
-          str: "",
-        },
-        {
-          str: "ever illegally saved and",
-        },
-        {
-          str: "quit and continued a run?",
-        },
-        {
-          str: () => (hasSavedAndQuit() ? "yes" : "no"),
-          colorSelect: true,
-          noSel: true,
-        },
-        {
-          str: "",
-        },
       ],
     },
 
@@ -815,17 +788,24 @@ export function initDeadSeaScrolls(): void {
           str: "version:",
         },
         {
-          str: version,
+          str: version.toLowerCase(),
           clr: 3,
         },
         {
           str: "",
         },
         {
-          str: "created by:",
+          str: "original by:",
         },
         {
           str: "zamiel",
+          clr: 3,
+        },
+        {
+          str: "fork by:",
+        },
+        {
+          str: "po4ti",
           clr: 3,
         },
         {
@@ -882,26 +862,20 @@ export function initDeadSeaScrolls(): void {
           noSel: true,
         },
         {
-          str: "prevent illegal pausing",
+          str: "enable prikols",
           choices: DSS_CHOICES,
           setting: 1,
-          variable: "preventPause",
+          variable: "enablePrikols",
 
-          load: () => v.persistent.preventPause,
+          load: () => v.persistent.enablePrikols,
 
           /** @noSelf */
           store: (choiceIndex: int) => {
-            v.persistent.preventPause = choiceIndex;
+            v.persistent.enablePrikols = choiceIndex;
           },
 
           tooltip: {
-            strSet: [
-              "whether to",
-              "prevent",
-              "pausing in",
-              "rooms with",
-              "enemies.",
-            ],
+            strSet: ["whether to", "enable", "stupid", "jokes"],
           },
         },
         {
@@ -938,12 +912,33 @@ export function initDeadSeaScrolls(): void {
 
     menuSettings: {
       title: "settings",
+      fSize: 2,
       buttons: [
         DSSMod.gamepadToggleButton,
+        {
+          str: "",
+          noSel: true,
+        },
         DSSMod.menuKeybindButton,
+        {
+          str: "",
+          noSel: true,
+        },
         DSSMod.paletteButton,
+        {
+          str: "",
+          noSel: true,
+        },
         DSSMod.menuHintButton,
+        {
+          str: "",
+          noSel: true,
+        },
         DSSMod.menuBuzzerButton,
+        {
+          str: "",
+          noSel: true,
+        },
       ],
     },
   };

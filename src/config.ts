@@ -9,8 +9,10 @@ const DSS_CHOICE_ENABLED = 2;
 export const v = {
   persistent: {
     timer: DSS_CHOICE_DISABLED,
-    preventPause: DSS_CHOICE_DISABLED,
+    enablePrikols: DSS_CHOICE_ENABLED,
     delayAchievementText: DSS_CHOICE_DISABLED,
+
+    deadSeaScrolls: {},
   },
 };
 
@@ -18,8 +20,8 @@ export function isTimerEnabled(): boolean {
   return v.persistent.timer === DSS_CHOICE_ENABLED;
 }
 
-export function isPreventPauseEnabled(): boolean {
-  return v.persistent.preventPause === DSS_CHOICE_ENABLED;
+export function isPrikolsEnabled(): boolean {
+  return v.persistent.enablePrikols === DSS_CHOICE_ENABLED;
 }
 
 export function isDelayAchievementTextEnabled(): boolean {

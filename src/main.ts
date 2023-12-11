@@ -29,7 +29,7 @@ import { PathRemoval } from "./classes/features/PathRemoval";
 import { PickupRemoval } from "./classes/features/PickupRemoval";
 import { PillRemoval } from "./classes/features/PillRemoval";
 import { PreventEndMegaSatan } from "./classes/features/PreventEndMegaSatan";
-import { PreventPause } from "./classes/features/PreventPause";
+//import { PreventPause } from "./classes/features/PreventPause";
 import { PreventVictoryLapPopup } from "./classes/features/PreventVictoryLapPopup";
 import { RemoveDonationMachines } from "./classes/features/RemoveDonationMachines";
 import { RemoveGlitchedCollectibles } from "./classes/features/RemoveGlitchedCollectibles";
@@ -72,7 +72,7 @@ const MOD_FEATURES = [
   PickupRemoval,
   PillRemoval,
   PreventEndMegaSatan,
-  PreventPause,
+  //PreventPause,
   PreventVictoryLapPopup,
   RemoveDonationMachines,
   RemoveGlitchedCollectibles,
