@@ -4,8 +4,10 @@ import {
   ReadonlyMap,
   game,
   getRoomListIndex,
+  getStageType,
   inBeastRoom,
   inMegaSatanRoom,
+  isRepentanceStage,
 } from "isaacscript-common";
 import { CharacterObjectiveKind } from "../../enums/CharacterObjectiveKind";
 import { ObjectiveType } from "../../enums/ObjectiveType";
@@ -66,9 +68,12 @@ export function bossObjectiveDetectionPreSpawnClearAward(): void {
   switch (roomType) {
     // 5
     case RoomType.BOSS: {
-      const bossID = getModifiedBossID();
+      let bossID = getModifiedBossID();
       if (bossID === undefined) {
         return;
+      }
+      if (isRepentanceStage(getStageType())) {
+        if (bossID == BossID.MAUSOLEUM_MOM) bossID = BossID.MOM;
       }
       // Handle XL floors.
       if (

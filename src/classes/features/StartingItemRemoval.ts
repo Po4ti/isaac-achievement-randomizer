@@ -23,6 +23,7 @@ import {
   removeAllPickups,
   removeAllTears,
   setPlayerHealth,
+  setRunSeed,
   sfxManager,
 } from "isaacscript-common";
 import { BANNED_COLLECTIBLE_TYPES_SET } from "../../arrays/unlockableCollectibleTypes";
@@ -31,6 +32,7 @@ import { POCKET_ITEM_SLOTS, TRINKET_SLOTS } from "../../cachedEnums";
 import { OtherUnlockKind } from "../../enums/OtherUnlockKind";
 import { mod } from "../../mod";
 import { RandomizerModFeature } from "../RandomizerModFeature";
+import { getRandomizerRunSeedString, preForcedRestart } from "./StatsTracker";
 import {
   anyPillEffectsUnlocked,
   getUnlockedEdenActiveCollectibleTypes,
@@ -53,6 +55,14 @@ export class StartingItemRemoval extends RandomizerModFeature {
   removeItemsFromInventory(): void {
     const player = Isaac.GetPlayer();
     const character = player.GetPlayerType();
+
+    if (player.HasCollectible(CollectibleType.RED_STEW)) {
+      const newStartSeedString = getRandomizerRunSeedString() as string;
+      mod.runNextRenderFrame(() => {
+        preForcedRestart();
+        setRunSeed(newStartSeedString);
+      });
+    }
 
     for (const collectibleType of VANILLA_COLLECTIBLE_TYPES) {
       if (
