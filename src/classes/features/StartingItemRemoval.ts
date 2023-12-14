@@ -14,6 +14,7 @@ import {
   VANILLA_COLLECTIBLE_TYPES,
   game,
   getRandomArrayElement,
+  getRandomInt,
   isEden,
   isGoldenTrinketType,
   newRNG,
@@ -129,6 +130,7 @@ export class StartingItemRemoval extends RandomizerModFeature {
         // Eden may be randomly given collectibles that are not yet unlocked, so we remove all
         // collectibles and then explicitly add two new ones.
         // this.emptyEdenInventory(player);
+
         this.addEdenRandomCollectibles(player);
         break;
       }
@@ -163,9 +165,28 @@ export class StartingItemRemoval extends RandomizerModFeature {
       return;
     }
 
+    player.AddBlackHearts(-1000);
+    player.AddMaxHearts(-1000, false);
+    player.AddEternalHearts(-1000);
+    player.AddBoneHearts(-1000);
+    player.AddBrokenHearts(-1000);
+    player.AddGoldenHearts(-1000);
+
+    //The game randomly picks x = 0 to 3 Red Hearts;
+    //It will randomly pick between 0 and (3 - x) Soul Hearts;
+    //If no red hearts were picked at the first step, the game guarantees the player at least 2 Soul Hearts.
+
     const seeds = game.GetSeeds();
     const startSeed = seeds.GetStartSeed();
-    const rng = newRNG(startSeed);
+
+    const red_hearts = getRandomInt(0, 3, newRNG(startSeed));
+    let soul_hearts = getRandomInt(0, 3 - red_hearts, newRNG(startSeed));
+    if (red_hearts == 0 && soul_hearts < 2) soul_hearts = 2;
+
+    player.AddMaxHearts(red_hearts * 2, false);
+    player.AddHearts(red_hearts * 2);
+
+    player.AddSoulHearts(soul_hearts * 2);
 
     const activeCollectibleTypes = getUnlockedEdenActiveCollectibleTypes(true);
     const passiveCollectibleTypes =
@@ -173,7 +194,7 @@ export class StartingItemRemoval extends RandomizerModFeature {
 
     const passiveCollectibleType =
       passiveCollectibleTypes.length > 0
-        ? getRandomArrayElement(passiveCollectibleTypes, rng)
+        ? getRandomArrayElement(passiveCollectibleTypes, newRNG(startSeed))
         : undefined;
 
     // If we do not have any active collectibles unlocked, default to giving Eden a second passive
@@ -182,9 +203,9 @@ export class StartingItemRemoval extends RandomizerModFeature {
     let act = undefined;
 
     if (activeCollectibleTypes.length > 0) {
-      act = getRandomArrayElement(activeCollectibleTypes, rng);
+      act = getRandomArrayElement(activeCollectibleTypes, newRNG(startSeed));
     } else if (passiveCollectibleTypes.length > 1) {
-      act = getRandomArrayElement(passiveCollectibleTypes, rng, [
+      act = getRandomArrayElement(passiveCollectibleTypes, newRNG(startSeed), [
         passiveCollectibleType,
       ]);
     }
