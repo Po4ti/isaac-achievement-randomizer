@@ -272,9 +272,11 @@ function dssmenucore.init(DSSModName, v)
     end
 
     local function SafeKeyboardTriggered(key, controllerIndex)
-        return Input.IsButtonTriggered(key, controllerIndex)
-            and not Input.IsButtonTriggered(key % 32, controllerIndex)
-    end
+        if key == nil then
+            return false
+        end
+        return Input.IsButtonTriggered(key, controllerIndex) and not Input.IsButtonTriggered(key % 32, controllerIndex)
+      end
 
     local function AnyKeyboardTriggered(key, controllerIndex)
         if SafeKeyboardTriggered(key, controllerIndex) then
