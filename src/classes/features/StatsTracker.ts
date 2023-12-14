@@ -36,6 +36,7 @@ const HIGHER_PRIORITY_THAN_ISAACSCRIPT_COMMON = (CallbackPriority.IMPORTANT -
 
 class PlaythroughStats {
   numCompletedRuns = 0;
+  shiftSeeds = 0;
   numDeaths = 0;
   gameFramesElapsed = 0;
   usedIllegalPause = false;
@@ -187,6 +188,10 @@ export function getPlaythroughNumCompletedRuns(): int {
   return v.persistent.stats.numCompletedRuns;
 }
 
+export function incrementSeedShiftCounter(): void {
+  v.persistent.stats.shiftSeeds++;
+}
+
 export function getPlaythroughNumDeaths(): int {
   return v.persistent.stats.numDeaths;
 }
@@ -217,6 +222,10 @@ export function getRandomizerRunSeedString(): string | undefined {
 
   const rng = newRNG(seed);
   repeat(v.persistent.stats.numCompletedRuns, () => {
+    rng.Next();
+  });
+
+  repeat(v.persistent.stats.shiftSeeds, () => {
     rng.Next();
   });
 

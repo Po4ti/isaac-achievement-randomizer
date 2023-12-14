@@ -45,6 +45,7 @@ import {
   isTrinketTypeUnlocked,
 } from "./achievementTracker/completedUnlocks";
 
+import { incrementSeedShiftCounter } from "./StatsTracker";
 /** This feature handles removing the starting items of a player that are not unlocked yet. */
 export class StartingItemRemoval extends RandomizerModFeature {
   @CallbackCustom(ModCallbackCustom.POST_PLAYER_INIT_FIRST)
@@ -57,7 +58,10 @@ export class StartingItemRemoval extends RandomizerModFeature {
     const character = player.GetPlayerType();
 
     if (player.HasCollectible(CollectibleType.RED_STEW)) {
-      const newStartSeedString = getRandomizerRunSeedString() as string;
+      incrementSeedShiftCounter();
+      let newStartSeedString = getRandomizerRunSeedString() as string;
+      print("Red stew detected");
+      print("Trying to set seed to", newStartSeedString);
       mod.runNextRenderFrame(() => {
         preForcedRestart();
         setRunSeed(newStartSeedString);
