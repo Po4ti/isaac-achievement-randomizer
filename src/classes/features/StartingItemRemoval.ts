@@ -165,6 +165,10 @@ export class StartingItemRemoval extends RandomizerModFeature {
       return;
     }
 
+    /////////0. Remove room pickups////////////////
+
+    ///////////////////1. Health//////////////////////////
+
     player.AddBlackHearts(-1000);
     player.AddMaxHearts(-1000, false);
     player.AddEternalHearts(-1000);
@@ -187,6 +191,12 @@ export class StartingItemRemoval extends RandomizerModFeature {
     player.AddHearts(red_hearts * 2);
 
     player.AddSoulHearts(soul_hearts * 2);
+
+    ////////////////////2. Pickups//////////////////
+
+    ////////////////////3. Pocket items////////////////
+
+    /////////////////4. Items//////////////////////
 
     const activeCollectibleTypes = getUnlockedEdenActiveCollectibleTypes(true);
     const passiveCollectibleTypes =
