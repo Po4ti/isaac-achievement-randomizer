@@ -128,7 +128,7 @@ export class StartingItemRemoval extends RandomizerModFeature {
       case PlayerType.EDEN_B: {
         // Eden may be randomly given collectibles that are not yet unlocked, so we remove all
         // collectibles and then explicitly add two new ones.
-        // this.emptyEdenInventory(player);
+        this.emptyEdenInventory(player);
         this.addEdenRandomCollectibles(player);
         break;
       }
