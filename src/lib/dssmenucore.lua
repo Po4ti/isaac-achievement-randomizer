@@ -2104,7 +2104,6 @@ function dssmenucore.init(DSSModName, v)
             DSSMenu.CloseMenu()
         end
     end
-
     function DSSMod.checkMenu()
         if not menuInput then
             return false
@@ -2694,6 +2693,11 @@ function dssmenucore.init(DSSModName, v)
         end
 
         function DSSMenu.GetMenuKeybindSetting()
+            if v.MenuKeybind == nil then
+                print("nil")
+                return Keyboard.KEY_C
+            end
+
             return v.MenuKeybind
         end
 
