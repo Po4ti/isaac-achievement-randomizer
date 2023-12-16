@@ -2686,6 +2686,9 @@ function dssmenucore.init(DSSModName, v)
         end
 
         function DSSMenu.GetGamepadToggleSetting()
+            if v.ControllerToggle == nil then
+                return 1;
+            end
             return v.ControllerToggle
         end
 
@@ -2693,8 +2696,8 @@ function dssmenucore.init(DSSModName, v)
         end
 
         function DSSMenu.GetMenuKeybindSetting()
+            -- The mod loads bindings only after first menu opening. To not bloat callbacks with binding loading, it's better to leave default option here.
             if v.MenuKeybind == nil then
-                print("nil")
                 return Keyboard.KEY_C
             end
 
